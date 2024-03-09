@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send PIN</title>
+</head>
+<body>
+    <h1>Send PIN</h1>
+    <form id="pin-send-form">
+        <label for="pin">PIN:</label><br>
+        <input type="text" id="pin" name="pin" required><br><br>
+        <button type="submit">Send PIN</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById("pin-send-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+            fetch("/user/pin/send", {
+                method: "POST",
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("message").innerText = message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
